@@ -14,8 +14,8 @@ variable "aws_profile" {
 
 # The role that will have access to the S3 bucket, this should be a role that all
 # members of the team have access to.
-variable "saml_role" {
-}
+# variable "saml_role" {
+# }
 
 # Name of the application. This value should usually match the application tag below.
 variable "app" {
@@ -29,4 +29,5 @@ variable "app" {
 # and `customer`, who the application was create for.
 variable "tags" {
   type = map(string)
+  default = {}
 }

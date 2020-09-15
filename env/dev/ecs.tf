@@ -135,7 +135,11 @@ resource "aws_ecs_service" "app" {
 
   network_configuration {
     security_groups = [aws_security_group.nsg_task.id]
-    subnets         = split(",", var.private_subnets)
+    subnets = [
+      aws_subnet.private_subnet_a.id,
+      aws_subnet.private_subnet_b.id
+    ]
+    # subnets         = split(",", var.private_subnets)
   }
 
   load_balancer {
@@ -144,9 +148,10 @@ resource "aws_ecs_service" "app" {
     container_port   = var.container_port
   }
 
-  tags                    = var.tags
-  enable_ecs_managed_tags = true
-  propagate_tags          = "SERVICE"
+  # requires manual opt-in
+  # tags                    = var.tags
+  # enable_ecs_managed_tags = true
+  # propagate_tags          = "SERVICE"
 
   # workaround for https://github.com/hashicorp/terraform/issues/12634
   depends_on = [aws_alb_listener.http]

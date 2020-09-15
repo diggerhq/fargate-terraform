@@ -1,11 +1,30 @@
 terraform {
   required_version = ">= 0.12"
 
-  backend "s3" {
-    region  = "us-east-1"
-    profile = ""
-    bucket  = ""
-    key     = "dev.terraform.tfstate"
+  # vars are not allowed in this block
+  # see: https://github.com/hashicorp/terraform/issues/22088
+  # backend "s3" {
+  #   region  = "us-east-1"
+  #   profile = "default"
+  #   bucket  = "tform_state"
+  #   key     = "dev.terraform.tfstate"
+  # }
+
+  required_providers {
+    archive = {
+      version = "= 1.3.0"
+      source  = "hashicorp/archive"
+    }
+
+    local = {
+      version = "= 1.4.0"
+      source  = "hashicorp/local"
+    }
+
+    template = {
+      version = "= 2.1.2"
+      source  = "hashicorp/template"
+    }
   }
 }
 

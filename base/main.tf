@@ -30,6 +30,6 @@ output "docker_registry" {
 }
 
 # Returns the name of the S3 bucket that will be used in later Terraform files
-output "bucket" {
-  value = module.tf_remote_state.bucket
-}
+# output "bucket" {
+#   value = module.tf_remote_state.bucket
+# }

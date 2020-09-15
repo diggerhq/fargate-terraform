@@ -42,10 +42,14 @@ resource "aws_alb" "main" {
 
   # launch lbs in public or private subnets based on "internal" variable
   internal = var.internal
-  subnets = split(
-    ",",
-    var.internal == true ? var.private_subnets : var.public_subnets,
-  )
+  subnets = [
+    aws_subnet.public_subnet_a.id,
+    aws_subnet.public_subnet_b.id
+  ]
+  # subnets = split(
+  #   ",",
+  #   var.internal == true ? var.private_subnets : var.public_subnets,
+  # )
   security_groups = [aws_security_group.nsg_lb.id]
   tags            = var.tags
 
@@ -60,7 +64,7 @@ resource "aws_alb_target_group" "main" {
   name                 = "${var.app}-${var.environment}"
   port                 = var.lb_port
   protocol             = var.lb_protocol
-  vpc_id               = var.vpc
+  vpc_id               = aws_vpc.vpc.id
   target_type          = "ip"
   deregistration_delay = var.deregistration_delay
 
