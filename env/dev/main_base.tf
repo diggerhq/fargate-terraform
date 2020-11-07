@@ -1,5 +1,14 @@
+
+variable "aws_key" {
+}
+
+variable "aws_secret" {
+}
+
 terraform {
   required_version = ">= 0.12"
+
+  backend "s3" {}
 }
 
 /**
@@ -15,7 +24,17 @@ terraform {
 provider "aws" {
   version = ">= 2.23.0"
   region  = var.region
-  profile = var.aws_profile
+  # profile = var.aws_profile
+  access_key = var.aws_key
+  secret_key = var.aws_secret
+}
+
+resource "aws_iam_user" "project_user" {
+  name = var.iam_user
+}
+
+resource "aws_iam_access_key" "project_user_key" {
+  user    = aws_iam_user.project_user.name
 }
 
 /*
@@ -27,6 +46,14 @@ provider "aws" {
 # Returns the name of the ECR registry, this will be used later in various scripts
 output "docker_registry" {
   value = aws_ecr_repository.app.repository_url
+}
+
+output "project_user_access_key" {
+  value = aws_iam_access_key.project_user_key.id
+}
+
+output "project_user_secret" {
+  value = aws_iam_access_key.project_user_key.secret
 }
 
 # Returns the name of the S3 bucket that will be used in later Terraform files

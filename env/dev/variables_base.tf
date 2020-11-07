@@ -9,8 +9,8 @@ variable "region" {
 }
 
 # The AWS profile to use, this would be the same value used in AWS_PROFILE.
-variable "aws_profile" {
-}
+# variable "aws_profile" {
+# }
 
 # The role that will have access to the S3 bucket, this should be a role that all
 # members of the team have access to.
